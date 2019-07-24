@@ -35,11 +35,42 @@ Note: https://support.sonatype.com/hc/en-us/articles/213465768?_ga=2.157000955.1
     mkdir -p /some/dir/nexus3/data
    chown -R 200 /some/dir/nexus3/data
    
-2.    
+2.  Go to the “nexus3” directory and Create a file named “docker-compose.yml” with the following content:
+  nexus:
+    image: sonatype/nexus3:latest
+    ports:
+        - "8081:8081"
+        - "8123:8123"
+    volumes:
+        - ./data:/nexus-data
+3. Launch Nexus
+   docker-compose up -d
+   docker-compose logs
+   
+4. Open the URL [Docker host IP address]:8081 in a web browser   
+
 
 *Note : https://www.ivankrizsan.se/2016/06/09/create-a-private-docker-registry/
 
 ## 3. Install Nginx proxy
+A. Create Nginx Image:
+  
+1. Create folder nginx at level of nexus
+   mkdir nginx
+   
+2. Create DOckerfile with below context:
+   	FROM nginx
+	COPY ./nginx.conf /etc/nginx/nginx.conf
+	
+3. Create Nginx.conf file at same level of dockerfile
+
+
+   
+B. Run nginx image 
+1. create folder and All the commands will then need to be run from this directory
+   mkdir docker_ssl_proxy
+   
+2.    
 
 ## 4. Docker client setup
 A. Configure certificate on machine
