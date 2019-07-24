@@ -31,8 +31,15 @@ Note: https://support.sonatype.com/hc/en-us/articles/213465768?_ga=2.157000955.1
 
 ## 2. Install Nexus Repo
 
+1. Create dir for nexus
+    mkdir -p /some/dir/nexus3/data
+   chown -R 200 /some/dir/nexus3/data
+   
+2.    
 
-## 3. Install Nexus Repo
+*Note : https://www.ivankrizsan.se/2016/06/09/create-a-private-docker-registry/
+
+## 3. Install Nginx proxy
 
 ## 4. Docker client setup
 A. Configure certificate on machine
