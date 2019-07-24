@@ -85,10 +85,45 @@ B. Run nginx image
 Note: https://blog.sonatype.com/setting-up-a-docker-private-registry-with-authentication-using-nexus-and-nginx   
 
 ## 4. Docker client setup
+### REDHAT7.x or CENTOS7.x
 A. Configure certificate on machine
 
 1.  Add entry to /etc/hosts file 
-    52.XXX.XXX.176  repo.imp.com nexus.imp.com
+    52.170.206.176  repo.imp.com nexus.imp.com
+
+2. Use Oracle java `keytool` to retrieve and print the Nexus server certificate for the Nexus instance running at ${NEXUS_DOMAIN}:${SSL_PORT} :
+   keytool -printcert -sslserver repo.imp.com -rfc
+	
+3. Copy certificate recived from above step to below localtion
+   /etc/pki/ca-trust/source/anchors/repo.imp.com.crt
+   
+4. Fires command 
+   sudo update-ca-trust enable; sudo update-ca-trust extract	
+   
+
+B. Configure certificate on docker client	
+
+1. Create folder with repo name in /etc/docker/certs.d dir
+    sudo mkdir /etc/docker/certs.d/repo.imp.com
+	
+2. Copy certificate to this new folder with name ca.cert
+   sudo cp /etc/pki/ca-trust/source/anchors/repo.imp.com.crt repo.imp.com/ca.crt
+ 
+3.  restart docker service 
+   sudo systemctl restart docker
+
+4.  Login to docker registry , this login should be successful
+   docker login repo.imp.com 
+
+5. try to pull or push images  
+
+
+### UBUNTU/DEBIAN:
+
+A. Configure certificate on machine
+
+1.  Add entry to /etc/hosts file 
+    52.170.206.176  repo.imp.com nexus.imp.com
 
 2. Use Oracle java `keytool` to retrieve and print the Nexus server certificate for the Nexus instance running at ${NEXUS_DOMAIN}:${SSL_PORT} :
    keytool -printcert -sslserver repo.imp.com -rfc
@@ -116,7 +151,7 @@ B. Configure certificate on docker client
 4.  Login to docker registry , this login should be successful
    docker login repo.imp.com 
 
-5. try to pull or push images  
+5. try to pull or push images   
 
 Note: https://docs.docker.com/registry/insecure/#docker-still-complains-about-the-certificate-when-using-authentication
       https://support.sonatype.com/hc/en-us/articles/217542177-Using-Self-Signed-Certificates-with-Nexus-Repository-Manager-and-Docker-Daemon step 3
