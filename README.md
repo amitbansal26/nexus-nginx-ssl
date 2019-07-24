@@ -47,7 +47,12 @@ Note: https://support.sonatype.com/hc/en-us/articles/213465768?_ga=2.157000955.1
    docker-compose up -d
    docker-compose logs
    
-4. Open the URL [Docker host IP address]:8081 in a web browser   
+4. Create newtwork
+   docker network create nexusnet
+   
+5. Connect network running container
+   
+6. Open the URL [Docker host IP address]:8081 in a web browser   
 
 
 *Note : https://www.ivankrizsan.se/2016/06/09/create-a-private-docker-registry/
@@ -64,13 +69,20 @@ A. Create Nginx Image:
 	
 3. Create Nginx.conf file at same level of dockerfile
 
+4. run below command to create nginx image with all required details
+   docker build -t nginx-img .
 
    
 B. Run nginx image 
 1. create folder and All the commands will then need to be run from this directory
    mkdir docker_ssl_proxy
    
-2.    
+2.  Copy certificates to this directory
+ 
+3. execute below command to run nginx
+   docker run --name nginx -d -v `pwd`:/etc/nginx/conf.d -p 443:443 --network nexusnet nginx-img
+   
+Note: https://blog.sonatype.com/setting-up-a-docker-private-registry-with-authentication-using-nexus-and-nginx   
 
 ## 4. Docker client setup
 A. Configure certificate on machine
