@@ -91,9 +91,12 @@ A. Configure certificate on machine
 1.  Add entry to /etc/hosts file 
     52.170.206.176  repo.imp.com nexus.imp.com
 
-2. Use Oracle java `keytool` to retrieve and print the Nexus server certificate for the Nexus instance running at ${NEXUS_DOMAIN}:${SSL_PORT} :
+2. Use Oracle java `keytool` to retrieve and print the Nexus server certificate for the Nexus instance running at ${NEXUS_DOMAIN}:${SSL_PORT} . Run below command in jre/bin folder:
+
    keytool -printcert -sslserver repo.imp.com -rfc
-	
+
+ DOwnload java using 'sudo yum install java-1.8.0-openjdk'
+ 
 3. Copy certificate recived from above step to below localtion
    /etc/pki/ca-trust/source/anchors/repo.imp.com.crt
    
